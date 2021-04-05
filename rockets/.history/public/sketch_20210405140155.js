@@ -18,7 +18,6 @@ function setup(){
     generationP = createP();
     lifeP = createP();
     fastestRocketAllP = createP();
-    fastestRocketGenP = createP();
     target = createVector(width/2,50)
 }
 

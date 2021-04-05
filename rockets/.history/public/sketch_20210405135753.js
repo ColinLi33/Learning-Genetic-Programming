@@ -5,10 +5,8 @@ let lifeP;
 let count = 0;
 let generation = 0;
 let generationP;
-let fastestRocketAll = 200;
-let fastestRocketAllP
-let fastestRocketGen = 200;
-let fastestRocketGenP
+let fastestRocket = 'None';
+let fastestRocketP
 let target;
 
 
@@ -17,8 +15,6 @@ function setup(){
     population = new Population();
     generationP = createP();
     lifeP = createP();
-    fastestRocketAllP = createP();
-    fastestRocketGenP = createP();
     target = createVector(width/2,50)
 }
 
@@ -27,9 +23,6 @@ function draw(){
     population.run();
     lifeP.html('Frame: ' + count);
     generationP.html('Generation: ' + generation) 
-    fastestRocketAllP.html('Fastest Rocket All Gens: ' + fastestRocketAll)
-    fastestRocketGenP.html('Fastest Rocket Last Gen: ' + fastestRocketGen)
-
 
     count++;
     if(count == lifespan){
@@ -163,16 +156,9 @@ class Population{
 
     //run through all of the rockets and calculate fitness
     evaluate(){
-        let fastest = 200;
+        let maxFit = 0;
         for(let i = 0; i < this.popsize; i++){
             this.rockets[i].calcFitness();
-            if(this.rockets[i].framesToFinish < fastest){
-                fastest = this.rockets[i].framesToFinish
-            }
-        fastestRocketGen = fastest;
-        if(fastestRocketGen < fastestRocketAll){
-            fastestRocketAll = fastestRocketGen
-        }
         }
         for(let i = 0; i < this.popsize;i++){
             for(let j = 0; j < this.popsize - 1;j++){
