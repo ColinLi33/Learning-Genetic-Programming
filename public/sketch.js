@@ -1,15 +1,21 @@
 let population;
 //rocket lives for lifespan frames
-let lifespan = 200;
+let lifespan = 400;
 let lifeP;
 let count = 0;
 let generation = 0;
 let generationP;
-let fastestRocketAll = 200;
+let fastestRocketAll = lifespan;
 let fastestRocketAllP
-let fastestRocketGen = 200;
+let fastestRocketGen = lifespan;
 let fastestRocketGenP
 let target;
+let maxForce = .2
+
+let rx = 100
+let ry = 150
+let rw = 200
+let rh = 10
 
 
 function setup(){
@@ -40,6 +46,8 @@ function draw(){
         }
         count = 0;
     }
+    fill(255)
+    rect(rx,ry,rw,rh);
 
     ellipse(target.x,target.y,16,16);
 }
@@ -53,7 +61,7 @@ class DNA{
             this.genes = [];
             for(let i = 0; i < lifespan; i++){
                 this.genes[i] = p5.Vector.random2D();
-                this.genes[i].setMag(.1);
+                this.genes[i].setMag(maxForce);
             }
         }
     }
@@ -74,7 +82,7 @@ class DNA{
             let random = Math.random() 
             if(random < mutationRate){
                 this.genes[i] = p5.Vector.random2D();
-                this.genes[i].setMag(.1);
+                this.genes[i].setMag(maxForce);
                 console.log('MUTATESTE')
             }
         }
@@ -87,6 +95,8 @@ class Rocket{
         this.vel = createVector();
         this.acc = createVector();
         this.completed = false;
+        this.crashed = false;
+
         this.framesToFinish = 200;
         if(dna){
             this.dna = dna;
@@ -102,6 +112,7 @@ class Rocket{
         this.acc = createVector();
         this.completed = false;
         this.fitness = 0;
+        this.crashed = false;
     }
 
     //accelartion control
@@ -116,6 +127,9 @@ class Rocket{
         if(this.completed){
             this.fitness *= 10
         }
+        if(this.crashed){
+            this.fitness /=10
+        }
     }
     
     //physics
@@ -128,12 +142,25 @@ class Rocket{
             this.completed = true;
             this.pos = target.copy();
         }
+        //hit detection
+        if(this.pos.x > rx && this.pos.x < rx + rw && this.pos.y > ry && this.pos.y < ry + rh){
+            this.crashed = true
+        }
+
+        if(this.pos.x > width || this.pos.x < 0){
+            this.crashed = true;
+        }
+
+        if(this.pos.y > height || this.pos.y < 0){
+            this.crashed = true;
+        }
         
         this.applyForce(this.dna.genes[count])
-        if(!this.completed){
+        if(!this.completed && !this.crashed){
             this.vel.add(this.acc);
             this.pos.add(this.vel);
             this.acc.mult(0);
+            this.vel.limit(4)
         }
     }
 
@@ -233,6 +260,3 @@ class Population{
         }
     }
 }
-
-
-
