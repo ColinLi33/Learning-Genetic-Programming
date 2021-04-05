@@ -5,9 +5,9 @@ let lifeP;
 let count = 0;
 let generation = 0;
 let generationP;
-let fastestRocketAll = 200;
+let fastestRocketAll = lifespan;
 let fastestRocketAllP
-let fastestRocketGen = 200;
+let fastestRocketGen = lifespan;
 let fastestRocketGenP
 let target;
 let maxForce = .2
