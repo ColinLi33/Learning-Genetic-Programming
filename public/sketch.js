@@ -73,7 +73,7 @@ class DNA{
     crossover(partner){
         let newGenes = []
         let mid = floor(random(this.genes.length))
-        let mutationRate = .05
+        let mutationRate = .01
         for(let i = 0; i < this.genes.length; i++){
             if(i > mid){
                 newGenes[i] = this.genes[i]
@@ -95,11 +95,12 @@ class DNA{
 }
 class Rocket{
     constructor(dna){
-        this.pos = createVector(width/2,height);
+        this.pos = createVector(width/2,height - 20);
         this.vel = createVector();
         this.acc = createVector();
         this.completed = false;
         this.crashed = false;
+        
 
         this.framesToFinish = lifespan;
         if(dna){
@@ -111,12 +112,13 @@ class Rocket{
     }
 
     reset(){
-        this.pos = createVector(width/2,height);
+        this.pos = createVector(width/2,height - 20);
         this.vel = createVector();
         this.acc = createVector();
         this.completed = false;
         this.fitness = 0;
         this.crashed = false;
+        this.crashedCenter = false;
     }
 
     //accelartion control
@@ -185,7 +187,7 @@ class Rocket{
 class Population{
     constructor(){
         this.rockets = [];
-        this.popsize = 25;
+        this.popsize = 500;
         for(let i = 0; i < this.popsize; i++){
             this.rockets[i] = new Rocket();
         }
@@ -215,7 +217,6 @@ class Population{
                 }
             }
         }
-        console.log(this.rockets[this.rockets.length - 1].framesToFinish)
         
 
         
@@ -242,7 +243,7 @@ class Population{
     selection(){
         let parentA;
         let parentB;
-        let childrenBreeded = 5;
+        let childrenBreeded = 50;
         let topParents = 10
         for(let i = 0; i < childrenBreeded; i++){
             let randomA = Math.floor(Math.random() * topParents);
@@ -254,6 +255,11 @@ class Population{
             
             let child = parentA.crossover(parentB);
             this.rockets[i] = new Rocket(child);
+        }
+        let adoptionPercent = .01
+        let random = Math.random() 
+        if(random < adoptionPercent){
+            this.rockets[Math.floor(Math.random() * this.rockets.length -1)] = new Rocket();
         }
         generation++
     }
