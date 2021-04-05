@@ -190,7 +190,7 @@ class Population{
 
     //run through all of the rockets and calculate fitness
     evaluate(){
-        let fastest = 200;
+        let fastest = lifespan;
         for(let i = 0; i < this.popsize; i++){
             this.rockets[i].calcFitness();
             if(this.rockets[i].framesToFinish < fastest){
