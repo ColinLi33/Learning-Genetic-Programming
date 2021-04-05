@@ -39,17 +39,21 @@ function draw(){
 
     count++;
     if(count == lifespan){
-        population.evaluate();
-        population.selection();
-        for(let i = 0; i < population.rockets.length; i++){
-            population.rockets[i].reset()
-        }
-        count = 0;
+        endGen()
     }
     fill(255)
     rect(rx,ry,rw,rh);
 
     ellipse(target.x,target.y,16,16);
+}
+
+function endGen(){
+    population.evaluate();
+        population.selection();
+        for(let i = 0; i < population.rockets.length; i++){
+            population.rockets[i].reset()
+        }
+        count = 0;
 }
 
 //rocket constructor function
@@ -69,7 +73,7 @@ class DNA{
     crossover(partner){
         let newGenes = []
         let mid = floor(random(this.genes.length))
-        let mutationRate = .01
+        let mutationRate = .05
         for(let i = 0; i < this.genes.length; i++){
             if(i > mid){
                 newGenes[i] = this.genes[i]
@@ -128,7 +132,8 @@ class Rocket{
             this.fitness *= 10
         }
         if(this.crashed){
-            this.fitness /=10
+           this.fitness /=25
+           //this.fitness = 0
         }
     }
     
@@ -151,7 +156,7 @@ class Rocket{
             this.crashed = true;
         }
 
-        if(this.pos.y > height || this.pos.y < 0){
+        if(this.pos.y < 0 || this.pos.y > height){
             this.crashed = true;
         }
         
@@ -254,9 +259,18 @@ class Population{
     }
 
     run(){
+        let bool = true
         for(let i = 0; i < this.popsize; i++){
             this.rockets[i].update();
             this.rockets[i].show();
+            if(!this.rockets[i].completed && !this.rockets[i].crashed){
+                bool = false
+            }
+        }
+        if(bool){
+            console.log('hi')
+            count = lifespan
+            endGen()
         }
     }
 }
