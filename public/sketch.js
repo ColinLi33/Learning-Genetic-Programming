@@ -97,7 +97,7 @@ class Rocket{
         this.completed = false;
         this.crashed = false;
 
-        this.framesToFinish = 200;
+        this.framesToFinish = lifespan;
         if(dna){
             this.dna = dna;
         } else {
