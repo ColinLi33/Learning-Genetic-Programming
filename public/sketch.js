@@ -69,7 +69,7 @@ class DNA{
     crossover(partner){
         let newGenes = []
         let mid = floor(random(this.genes.length))
-        let mutationRate = .005
+        let mutationRate = .01
         for(let i = 0; i < this.genes.length; i++){
             if(i > mid){
                 newGenes[i] = this.genes[i]
@@ -196,10 +196,10 @@ class Population{
             if(this.rockets[i].framesToFinish < fastest){
                 fastest = this.rockets[i].framesToFinish
             }
-        fastestRocketGen = fastest;
-        if(fastestRocketGen < fastestRocketAll){
-            fastestRocketAll = fastestRocketGen
-        }
+            fastestRocketGen = fastest;
+            if(fastestRocketGen < fastestRocketAll){
+                fastestRocketAll = fastestRocketGen
+            }
         }
         for(let i = 0; i < this.popsize;i++){
             for(let j = 0; j < this.popsize - 1;j++){
