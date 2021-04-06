@@ -100,9 +100,8 @@ class Rocket{
         this.acc = createVector();
         this.completed = false;
         this.crashed = false;
-
-
         this.framesToFinish = lifespan;
+
         if(dna){
             this.dna = dna;
         } else {
@@ -219,26 +218,6 @@ class Population{
                 }
             }
         }
-
-
-
- // createP(maxFit);
-
-
-
-        // for(let i = 0; i < this.popsize; i++){
-        //     this.rockets[i].fitness /= maxFit
-        // }
-
-        // this.matingPool = []
-
-        // //ask steven about this part
-        // for(let i = 0; i < this.popsize; i++){
-        //     let n = this.rockets[i].fitness * 100;
-        //     for(let j = 0; j < n; j++){
-        //         this.matingPool.push(this.rockets[i])
-        //     }
-        // }
     }
 
     //GET SOME COOL CHILDREN
