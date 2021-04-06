@@ -8,6 +8,8 @@ let count = 0;
 let generationP;
 let mostPointsGenP
 let mostPointsAllP
+let birdsLeft = 0;
+let birdsLeftP;
 let frameP
 let pipeValues = []
 let pipeNum = 0;
@@ -58,6 +60,11 @@ class Bird{
     //     console.log(d)
     //     this.fitness = this.fitness/d
     // }
+
+    calcFitness(){
+        let d = Math.abs(this.y - (obstacles[0].gapStart + 50))
+        this.fitness = (this.fitness/d) * 10
+    }
 
 
     goUp() {
@@ -128,7 +135,7 @@ class DNA{
     crossover(partner){
         let newGenes = []
         let mid = floor(random(this.genes.length))
-        let mutationRate = .01
+        let mutationRate = .02
         for(let i = 0; i < this.genes.length; i++){
             if(i > mid){
                 newGenes[i] = this.genes[i]
@@ -194,6 +201,16 @@ class Population{
         }
     }
 
+    birdsLeft(){
+        let counter = 0;
+        for(let i = 0; i < this.birds.length;i++){
+            if(!this.birds[i].crashed){
+                counter++
+            }
+        }
+        return counter;
+    }
+
     //run through all of the rockets and calculate fitness
     evaluate(){
         let mostPoints = 0;
@@ -207,12 +224,23 @@ class Population{
             }
         //    this.birds[i].calcFitness()
         }
+        for(let i = 0; i < this.popsize;i++){
+            if(this.birds[i].fitness == mostPointsGen){
+                this.birds[i].calcFitness()
+            } else {
+                this.birds[i].fitness = this.birds[i].fitness/250
+            }
+        }
         //console.log(this.birds);
     //    this.birds.fitness.sort()
     //    console.log(this.birds)
         this.birds.sort((a, b) => {
             return a.fitness - b.fitness;
         });
+
+        for(let i = 0; i <this.popsize;i++){
+            console.log(this.birds[i].fitness)
+        }
         // for(let i = 0; i < this.birds.length;i++){
         //     for(let j = 0; j < this.birds.length-1;j++){
         //         if(this.birds[j].fitness > this.birds[j + 1].fitness){
@@ -238,8 +266,8 @@ class Population{
     selection(){
         let parentA;
         let parentB;
-        let childrenBreeded = 50;
-        let topParents = 10;
+        let childrenBreeded = 30;
+        let topParents = 4;
         for(let i = 0; i < childrenBreeded; i++){
             let randomA = Math.floor(Math.random() * topParents);
             let randomB = Math.floor(Math.random() * topParents);
@@ -296,9 +324,12 @@ function setup() {
     frameP = createP();
     mostPointsGenP = createP();
     mostPointsAllP = createP();
+    birdsLeftP = createP();
     for(let i = 0; i < 10000; i++){
         pipeValues.push(random(50, height - 100))
     }
+    birdsLeft = population.popsize
+
 //    frameRate(60);
     //obstacles.push(new Obstacle(pipeNum))
 }
@@ -310,6 +341,8 @@ function draw() {
     generationP.html('Generation: ' + generation)
     mostPointsAllP.html('Farthest Bird All Gens: ' + mostPointsAll)
     mostPointsGenP.html('Farthest Bird Last Gen: ' + mostPointsGen)
+    birdsLeft = population.birdsLeft()
+    birdsLeftP.html('Birds Alive: ' + birdsLeft)
 
     if (count % 85 == 0) {
         pipeNum++;
