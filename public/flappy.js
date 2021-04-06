@@ -224,7 +224,10 @@ class Population{
         //     }
         // }
         if(count >= maxGenes){
-            this.birds[this.birds.length - 1].dna.add(maxGenes/2)
+            for(let i = 0; i < this.birds.length; i++){
+                this.birds[i].dna.add(maxGenes/2)
+            }
+            //this.birds[this.birds.length - 1].dna.add(maxGenes/2)
             maxGenes+=maxGenes/2
         }
     //    console.log(this.birds)
