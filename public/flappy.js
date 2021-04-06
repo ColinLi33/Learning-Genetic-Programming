@@ -148,7 +148,6 @@ class DNA{
                     geneToGive = false;
                 }
                 this.genes[i] = geneToGive
-                console.log('MUTATION')
             }
         }
         return new DNA(newGenes);
@@ -225,7 +224,9 @@ class Population{
         //         }
         //     }
         // }
-        //this.birds[this.birds.length - 1].dna.add(maxGenes)
+        if(count == maxGenes){
+            this.birds[this.birds.length - 1].dna.add(maxGenes/2)
+        }
     //    console.log(this.birds)
 
     }
