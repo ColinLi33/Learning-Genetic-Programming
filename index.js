@@ -5,7 +5,7 @@ const port = 3333
 app.use(express.static('public'))
 
 app.get('/rocket', (req, res) => {
-  res.send('/rocket.html')
+  res.sendfile('public/rocket.html')
 })
 
 app.listen(process.env.PORT || port, () => {
