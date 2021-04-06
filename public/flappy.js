@@ -135,7 +135,7 @@ class DNA{
     crossover(partner){
         let newGenes = []
         let mid = floor(random(this.genes.length))
-        let mutationRate = .02
+        let mutationRate = .05
         for(let i = 0; i < this.genes.length; i++){
             if(i > mid){
                 newGenes[i] = this.genes[i]
@@ -266,7 +266,7 @@ class Population{
     selection(){
         let parentA;
         let parentB;
-        let childrenBreeded = 30;
+        let childrenBreeded = 50;
         let topParents = 4;
         for(let i = 0; i < childrenBreeded; i++){
             let randomA = Math.floor(Math.random() * topParents);
