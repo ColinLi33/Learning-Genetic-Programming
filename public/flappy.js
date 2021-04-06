@@ -223,7 +223,7 @@ class Population{
         //         }
         //     }
         // }
-        if(count == maxGenes){
+        if(count >= maxGenes){
             this.birds[this.birds.length - 1].dna.add(maxGenes/2)
             maxGenes+=maxGenes/2
         }
