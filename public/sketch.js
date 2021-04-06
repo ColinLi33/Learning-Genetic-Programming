@@ -32,7 +32,7 @@ function draw(){
     background(0)
     population.run();
     lifeP.html('Frame: ' + count);
-    generationP.html('Generation: ' + generation) 
+    generationP.html('Generation: ' + generation)
     fastestRocketAllP.html('Fastest Rocket All Gens: ' + fastestRocketAll)
     fastestRocketGenP.html('Fastest Rocket Last Gen: ' + fastestRocketGen)
 
@@ -83,7 +83,7 @@ class DNA{
         }
 
         for(let i = 0; i < this.genes.length; i++){
-            let random = Math.random() 
+            let random = Math.random()
             if(random < mutationRate){
                 this.genes[i] = p5.Vector.random2D();
                 this.genes[i].setMag(maxForce);
@@ -100,7 +100,7 @@ class Rocket{
         this.acc = createVector();
         this.completed = false;
         this.crashed = false;
-        
+
 
         this.framesToFinish = lifespan;
         if(dna){
@@ -119,6 +119,7 @@ class Rocket{
         this.fitness = 0;
         this.crashed = false;
         this.crashedCenter = false;
+        this.framesToFinish = lifespan;
     }
 
     //accelartion control
@@ -138,7 +139,7 @@ class Rocket{
            //this.fitness = 0
         }
     }
-    
+
     //physics
     update(){
         //makes rockets go crazy
@@ -161,7 +162,7 @@ class Rocket{
         if(this.pos.y < 0 || this.pos.y > height){
             this.crashed = true;
         }
-        
+
         this.applyForce(this.dna.genes[count])
         if(!this.completed && !this.crashed){
             this.vel.add(this.acc);
@@ -192,7 +193,7 @@ class Population{
             this.rockets[i] = new Rocket();
         }
 
-        
+
     }
 
     //run through all of the rockets and calculate fitness
@@ -203,6 +204,7 @@ class Population{
             if(this.rockets[i].framesToFinish < fastest){
                 fastest = this.rockets[i].framesToFinish
             }
+            console.log(fastest)
             fastestRocketGen = fastest;
             if(fastestRocketGen < fastestRocketAll){
                 fastestRocketAll = fastestRocketGen
@@ -217,12 +219,12 @@ class Population{
                 }
             }
         }
-        
 
-        
+
+
  // createP(maxFit);
 
-        
+
 
         // for(let i = 0; i < this.popsize; i++){
         //     this.rockets[i].fitness /= maxFit
@@ -252,12 +254,12 @@ class Population{
                 randomB = Math.floor(Math.random() * topParents);
             parentA = this.rockets[this.rockets.length - 1 - Math.floor(Math.random() * topParents)].dna;
             parentB = this.rockets[this.rockets.length - 1 - Math.floor(Math.random() * topParents)].dna;
-            
+
             let child = parentA.crossover(parentB);
             this.rockets[i] = new Rocket(child);
         }
         let adoptionPercent = .01
-        let random = Math.random() 
+        let random = Math.random()
         if(random < adoptionPercent){
             this.rockets[Math.floor(Math.random() * this.rockets.length -1)] = new Rocket();
         }
