@@ -204,7 +204,6 @@ class Population{
             mostPointsGen = mostPoints;
             if(mostPointsGen > mostPointsAll){
                 mostPointsAll = mostPointsGen
-                maxGenes = mostPointsAll * 100
             }
         //    this.birds[i].calcFitness()
         }
@@ -226,6 +225,7 @@ class Population{
         // }
         if(count == maxGenes){
             this.birds[this.birds.length - 1].dna.add(maxGenes/2)
+            maxGenes+=maxGenes/2
         }
     //    console.log(this.birds)
 
