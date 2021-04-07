@@ -7,6 +7,7 @@ let maxGenes = 500;
 let count = 0;
 let generationP;
 let mostPointsGenP
+let currentScoreP
 let mostPointsAllP
 let birdsLeft = 0;
 let birdsLeftP;
@@ -144,17 +145,19 @@ class DNA{
             }
         }
 
-        for(let i = 0; i < this.genes.length; i++){
+//mutate
+        for(let i = this.genes.length-75; i < this.genes.length; i++){
             let random = Math.random()
             if(random < mutationRate){
                 let geneToGive;
                 let randNum = Math.random()
-                if(randNum < .05){
+                if(randNum < .025){
                     geneToGive = true;
                 } else {
                     geneToGive = false;
                 }
                 this.genes[i] = geneToGive
+                console.log("MUTATE")
             }
         }
         return new DNA(newGenes);
@@ -203,12 +206,16 @@ class Population{
 
     birdsLeft(){
         let counter = 0;
+        let highScore = 0;
         for(let i = 0; i < this.birds.length;i++){
             if(!this.birds[i].crashed){
                 counter++
             }
+            if(this.birds[i].fitness > highScore){
+                highScore = this.birds[i].fitness
+            }
         }
-        return counter;
+        return [counter, highScore]
     }
 
     //run through all of the rockets and calculate fitness
@@ -250,6 +257,9 @@ class Population{
         //             this.birds[j + 1] = temp;
         //         }
         //     }
+        // }
+        // for(let i = 0; i < this.birds.length - 2; i++){
+        //     this.birds[i].dna = this.birds[i]
         // }
         if(count >= maxGenes){
             for(let i = 0; i < this.birds.length; i++){
@@ -320,6 +330,7 @@ function setup() {
     var canvas = createCanvas(800, 400)
     bird = new Bird()
     population = new Population();
+    currentScoreP = createP();
     generationP = createP();
     frameP = createP();
     mostPointsGenP = createP();
@@ -337,11 +348,14 @@ function setup() {
 
 function draw() {
     clear();
+    info = population.birdsLeft()
+    birdsLeft = info[0]
+    let currentScore = info[1]
+    currentScoreP.html('Current Score: ' + currentScore);
     frameP.html('Frame: ' + count);
     generationP.html('Generation: ' + generation)
     mostPointsAllP.html('Farthest Bird All Gens: ' + mostPointsAll)
     mostPointsGenP.html('Farthest Bird Last Gen: ' + mostPointsGen)
-    birdsLeft = population.birdsLeft()
     birdsLeftP.html('Birds Alive: ' + birdsLeft)
 
     if (count % 85 == 0) {
