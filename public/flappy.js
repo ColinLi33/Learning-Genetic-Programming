@@ -146,7 +146,7 @@ class DNA{
         }
 
 //mutate
-        for(let i = this.genes.length-75; i < this.genes.length; i++){
+        for(let i = count - 75; i < count; i++){
             let random = Math.random()
             if(random < mutationRate){
                 let geneToGive;
